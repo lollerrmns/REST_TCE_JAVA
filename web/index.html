@@ -194,63 +194,64 @@
 
                 <article id="about">
                     <h2 class="major">Inclusão de Item</h2>
-                    <div class="fields">
-                        <div style="width: 100%">
-                            <label for="desc" style="float:left; width:20%">Descrição:</label>
-                            <textarea id="desc" name="desc"  rows="3" cols="150" style="float:left; width:80%; "></textarea>
-                        </div>
-                        </br>
-                        </br>
-                        </br>
-                        </br>
-                        </br>
-                        <div class="field third" style="width: 100%">
-                            <label for="email" style="float:left; width:20%">Autor</label>
-                            <input type="text" name="email" id="email" style="display: table-cell;float:left; width:50%"/>
-                        </div>
-                        </br>
-                        </br>
-                        </br>
-                        <div style="width: 100%">
+                    <form method="POST" action="webresources/rest">
+                        <div class="fields">
+                            <div style="width: 100%">
+                                <label for="descricao_Inc" style="float:left; width:20%">Descrição:</label>
+                                <textarea id="descricao_Inc" name="descricao_Inc"  rows="3" cols="150" style="float:left; width:70%; "></textarea>
+                            </div>
+                            </br>
+                            </br>
+                            </br>
+                            </br>
+                            </br>
+                            <div class="field third" style="width: 100%">
+                                <label for="autor_Inc" style="float:left; width:7%">Autor:</label>
+                                <input type="text" name="autor_Inc" id="autor_Inc" style="display: table-cell;float:left; width:40%"/>
+                                <label for="ano_pub_Inc" style="float:left; width:15%; padding-left:15px;">Ano de Publicação:</label>
+                                <input type="text" name="ano_pub_Inc" id="ano_pub_Inc" style="display: table-cell;float:left; width:20%; "/>
+                            </div>
+                            </br>
+                            </br>
+                            </br>
+                            </br>
+                            <div style="width: 100%">
 
-                            <div style="float:left;width:30%;padding-left:15px;">
-                                <label for="dC">Data de Inclusão</label>
-                                <input type="text" name="dC" id="dC" placeholder="AGORA!" disabled="true"/>
-                                
-                                
-                            </div>
-                            <div style="float:left;width:30%;padding-left:15px;">
-                                <label for="dE">Data de Alteração</label>
-                                <input type="text" name="dE" id="dE" disabled="true"/>
-                            </div>
-                            <div style="float:left;width:30%;padding-left:15px;">
-                                <label for="dX">Data de Exclusão</label>
-                                <input type="text" name="dX" id="dX" disabled="true"/>
-                            </div>
-                        </div>
+                                <div style="float:left;width:30%;padding-left:15px;">
+                                    <label for="dC">Data de Inclusão</label>
+                                    <input type="text" name="dC" id="dC" placeholder="AGORA!" disabled="true"/>
 
-                    </div>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <div class="field">
-                        <div class="field half">
-                            <input type="radio" id="Rad_livro" name="Rad_tipos" checked>
-                            <label for="Rad_livro">Livro</label>
+
+                                </div>
+                                <div style="float:left;width:30%;padding-left:15px;">
+                                    <label for="dE">Data de Alteração</label>
+                                    <input type="text" name="dE" id="dE" disabled="true"/>
+                                </div>
+                                <div style="float:left;width:30%;padding-left:15px;">
+                                    <label for="dX">Data de Exclusão</label>
+                                    <input type="text" name="dX" id="dX" disabled="true"/>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="field half">
-                            <input type="radio" id="Rad_doc" name="Rad_tipos">
-                            <label for="Rad_doc">Documentos Raros</label>
-                        </div>
-                        <div class="field half">
-                            <input type="radio" id="Rad_manuscritos" name="Rad_tipos">
-                            <label for="Rad_manuscritos">Manuscritos</label>
-                        </div>
-                    </div><br><br>
-                    <div style="width: 100%">
-                        <input type="submit" value="Salvar!" class="primary" />
-                    </div>
+                        
+                        <div class="field">
+                            <div class="field half">
+                                <input type="radio" id="Rad_livro" name="tipo_inc" value="Livro" checked>
+                                <label for="Rad_livro">Livro</label>
+                            </div>
+                            <div class="field half">
+                                <input type="radio" id="Rad_doc" name="tipo_inc" value="Documentos Raros">
+                                <label for="Rad_doc">Documentos Raros</label>
+                            </div>
+                            <div class="field half">
+                                <input type="radio" id="Rad_manuscritos" name="tipo_inc" value="Manuscrito">
+                                <label for="Rad_manuscritos">Manuscritos</label>
+                            </div>
+                        </div><br><br>
+
+                        <input type="submit" value="Salvar!" class="primary" onclick="" />
+                    </form>
                 </article>
 
             </div>

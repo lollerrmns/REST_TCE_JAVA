@@ -59,11 +59,11 @@ public class RestResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{txt}")
     public String listar(@PathParam("txt") String txt) {
-        System.out.println("LOL - "+txt);
+        System.out.println("LOL - " + txt);
         List<Acervo> result = new ArrayList<Acervo>();
-       
-       result = DAO.listaAcervo(txt);
-        
+
+        result = DAO.listaAcervo(txt);
+
         if (result == null) {
             throw new WebApplicationException(404);
         }
@@ -73,14 +73,14 @@ public class RestResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String gravar(
-            @FormParam("id") int id,
-            @FormParam("descricao") String descricao,
-            @FormParam("autor") String autor,
-            @FormParam("ano_pub") String ano_pub,
-            @FormParam("data_alterado") String data_alterado,
-            @FormParam("data_incluso") String data_incluso
+    public void gravar(
+            @FormParam("descricao_Inc") String descricao,
+            @FormParam("autor_Inc") String autor,
+            @FormParam("ano_pub_Inc") String ano_pub,
+            @FormParam("tipo_inc") String tipo
     ) {
+        System.out.println("" + tipo);
+        /*
         Acervo a = new Acervo();
         a.setId(id);
         a.setDescricao(descricao);
@@ -90,7 +90,8 @@ public class RestResource {
         a.setData_incluso(data_incluso);
 
         DAO.gravarItem(a);
-        return "OK";
+         */
+//        return "OK";
     }
 
     /**
