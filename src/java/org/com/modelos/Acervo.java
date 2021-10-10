@@ -46,6 +46,9 @@ public class Acervo implements Serializable {
 
     @Column(name = "data_excluido", unique = false, nullable = true, length = 10)
     private String data_excluido;
+    
+    @Column(name = "tipo", unique = false, nullable = false, length = 30)
+    private String tipo = "Livro";
 
     public Acervo() {
     }

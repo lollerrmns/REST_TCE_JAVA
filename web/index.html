@@ -1,16 +1,276 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+        Dimension by HTML5 UP
+        html5up.net | @ajlkn
+        Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Client REST TCE</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
     </head>
-    <body>
-        <div>TODO write content</div>
+    <body class="is-preload">
+
+        <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+            <header id="header">
+                <div class="logo">
+                    <span class="icon fa-gem"></span>
+                </div>
+                <div class="content">
+                    <div class="inner">
+                        <h1>REST - Biblioteca</h1>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#intro">Intro</a></li>
+                        <!--<li><a href="#work">Work</a></li>-->
+                        <li><a href="#about">About</a></li>
+                        <!--<li><a href="#contact">Contact</a></li>-->
+                        <!--<li><a href="#elements">Elements</a></li>-->
+                    </ul>
+                </nav>
+            </header>
+
+            <!-- Main -->
+            <div id="main">
+
+                <!-- Intro -->
+                <article id="intro">
+                    <section>
+                        <h2 class="major">Pesquisa de Acervo</h2>
+                        <input type="text" name="demo-name" id="demo-name" value="" placeholder="Digite aqui . . ." />
+                        <div class="table-wrapper">
+                            <table class="alt" id = "tabela">
+                                <thead>
+                                    <tr>
+                                        <th>Descrição</th>
+                                        <th>Ano de Publicação</th>
+                                        <th>Autor/Escritor</th>
+                                        <th>Data Inclusão</th>
+                                        <th>Data Alteração</th>
+                                        <th>Data Exclusão</th>
+                                        <th>Tipo</th>
+                                        <th>EDIT</th>
+                                        <!--<th>DEL</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody id = "tabela_body">
+                                <script>
+                                    var rootURL = "http://localhost:8080/REST_TCE_JAVA/webresources/rest";
+                                    const txt = document.getElementById('demo-name');
+                                    txt.addEventListener('input',
+                                            function (e) {
+                                                $.ajax({
+                                                    url: rootURL + '/' + txt.value,
+                                                    headers: {
+                                                        'Content-Type': 'application/x-www-form-urlencoded'
+                                                    },
+                                                    type: "GET", /* or type:"GET" or type:"PUT" */
+                                                    dataType: "json",
+                                                    data: {
+                                                    },
+                                                    success: function (result) {
+                                                        console.log(result);
+                                                        var conteudo = document.createElement('tbody');
+                                                        result.forEach(function (element, index, array) {
+                                                            var tr = document.createElement('tr');
+
+                                                            tr.appendChild(document.createElement('td'));
+                                                            tr.appendChild(document.createElement('td'));
+                                                            tr.appendChild(document.createElement('td'));
+                                                            tr.appendChild(document.createElement('td'));
+                                                            tr.appendChild(document.createElement('td'));
+                                                            tr.appendChild(document.createElement('td'));
+                                                            tr.appendChild(document.createElement('td'));
+                                                            tr.appendChild(document.createElement('td'));
+                                                            //tr.appendChild(document.createElement('td'));
+
+                                                            tr.cells[0].appendChild(document.createTextNode('' + element["descricao"]));
+                                                            tr.cells[1].appendChild(document.createTextNode('' + element["ano_pub"]));
+                                                            tr.cells[2].appendChild(document.createTextNode('' + element["autor"]));
+                                                            tr.cells[3].appendChild(document.createTextNode('' + element["data_incluso"]));
+                                                            tr.cells[4].appendChild(document.createTextNode('' + element["data_alterado"]));
+                                                            tr.cells[5].appendChild(document.createTextNode('' + element["data_excluido"]));
+                                                            tr.cells[6].appendChild(document.createTextNode('' + element["tipo"]));
+                                                            tr.cells[7].innerHTML = "<a href='?id=" + element["id"] + "#contact' class='fas fa-edit'/>";
+                                                            //tr.cells[8].innerHTML = "<span id='D"+element["id"]+"' class='far fa-trash-alt'></span>";
+
+
+                                                            conteudo.appendChild(tr);
+                                                            conteudo.id = "tabela_body";
+                                                        });
+                                                        document.getElementById("tabela_body").replaceWith(conteudo);
+
+                                                        /*
+                                                         */
+                                                    },
+                                                    error: function () {
+                                                        console.log("error");
+                                                    }
+                                                });
+
+
+                                                /*$.ajax({
+                                                 type: 'GET',
+                                                 url: rootURL+ '/'+ name,
+                                                 dataType: "json",
+                                                 success: function (list) {
+                                                 $.each(list.result, function (index, item) {
+                                                 console.log(item);
+                                                 });
+                                                 }
+                                                 });*/
+                                            }
+                                    );
+
+
+
+                                </script>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Contact -->
+
+                <article id="contact">
+                    <h2 class="major">Edição de Item</h2>
+                    <div class="fields">
+                        <div style="width: 100%">
+                            <label for="desc" style="float:left; width:20%">Descrição:</label>
+                            <textarea id="desc" name="desc"  rows="3" cols="150" style="float:left; width:80%; "></textarea>
+                        </div>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        <div class="field third" style="width: 100%">
+                            <label for="email" style="float:left; width:30%">Autor</label>
+                            <input type="text" name="email" id="email" style="display: table-cell;float:left; width:50%"/>
+                        </div>
+                        </br>
+                        </br>
+                        </br>
+                        <div style="width: 100%">
+
+                            <div style="float:left;width:30%;padding-left:15px;">
+                                <label for="dC">Data de Inclusão</label>
+                                <input type="text" name="dC" id="dC" />
+                            </div>
+                            <div style="float:left;width:30%;padding-left:15px;">
+                                <label for="dE">Data de Alteração</label>
+                                <input type="text" name="dE" id="dE" />
+                            </div>
+                            <div style="float:left;width:30%;padding-left:15px;">
+                                <label for="dX">Data de Exclusão</label>
+                                <input type="text" name="dX" id="dX" />
+                            </div>
+                        </div>
+
+                    </div>
+                    </br>
+                    </br>
+                    </br>
+                    </br>
+                    </br>
+                    <div style="width: 100%">
+                        <ul class="actions">
+                            <li><input type="submit" value="Send Message" class="primary" /></li>
+                            <li><input type="reset" value="Reset" /></li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article id="about">
+                    <h2 class="major">Inclusão de Item</h2>
+                    <div class="fields">
+                        <div style="width: 100%">
+                            <label for="desc" style="float:left; width:20%">Descrição:</label>
+                            <textarea id="desc" name="desc"  rows="3" cols="150" style="float:left; width:80%; "></textarea>
+                        </div>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        </br>
+                        <div class="field third" style="width: 100%">
+                            <label for="email" style="float:left; width:20%">Autor</label>
+                            <input type="text" name="email" id="email" style="display: table-cell;float:left; width:50%"/>
+                        </div>
+                        </br>
+                        </br>
+                        </br>
+                        <div style="width: 100%">
+
+                            <div style="float:left;width:30%;padding-left:15px;">
+                                <label for="dC">Data de Inclusão</label>
+                                <input type="text" name="dC" id="dC" placeholder="AGORA!" disabled="true"/>
+                                
+                                
+                            </div>
+                            <div style="float:left;width:30%;padding-left:15px;">
+                                <label for="dE">Data de Alteração</label>
+                                <input type="text" name="dE" id="dE" disabled="true"/>
+                            </div>
+                            <div style="float:left;width:30%;padding-left:15px;">
+                                <label for="dX">Data de Exclusão</label>
+                                <input type="text" name="dX" id="dX" disabled="true"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="field">
+                        <div class="field half">
+                            <input type="radio" id="Rad_livro" name="Rad_tipos" checked>
+                            <label for="Rad_livro">Livro</label>
+                        </div>
+                        <div class="field half">
+                            <input type="radio" id="Rad_doc" name="Rad_tipos">
+                            <label for="Rad_doc">Documentos Raros</label>
+                        </div>
+                        <div class="field half">
+                            <input type="radio" id="Rad_manuscritos" name="Rad_tipos">
+                            <label for="Rad_manuscritos">Manuscritos</label>
+                        </div>
+                    </div><br><br>
+                    <div style="width: 100%">
+                        <input type="submit" value="Salvar!" class="primary" />
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Footer -->
+            <footer id="footer">
+                <p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+            </footer>
+
+        </div>
+
+        <!-- BG -->
+        <div id="bg"></div>
+
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+
     </body>
 </html>

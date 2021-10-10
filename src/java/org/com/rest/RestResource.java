@@ -1,5 +1,6 @@
 package org.com.rest;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Context;
@@ -12,6 +13,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import org.com.controle.DAO;
 import org.com.modelos.Acervo;
@@ -44,12 +47,28 @@ public class RestResource {
     //@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String ler() {
-        List<Acervo> lst = DAO.listaAcervo();
-        String lol = "";
-        for (Acervo acervo : lst) {
-            lol += acervo.getDescricao();
+//        List<Acervo> lst = DAO.listaAcervo("");
+//        String lol = "";
+//        for (Acervo acervo : lst) {
+//            lol += acervo.getDescricao();
+//        }
+        return "";
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{txt}")
+    public String listar(@PathParam("txt") String txt) {
+        System.out.println("LOL - "+txt);
+        List<Acervo> result = new ArrayList<Acervo>();
+       
+       result = DAO.listaAcervo(txt);
+        
+        if (result == null) {
+            throw new WebApplicationException(404);
         }
-        return lol;
+
+        return new Gson().toJson(result);
     }
 
     @POST
@@ -96,18 +115,18 @@ public class RestResource {
         a.setAno_pub(ano_pub);
         a.setData_alterado(data_alterado);
         a.setData_incluso(data_incluso);
-        
+
         DAO.atualizarItem(a);
         return "ok";
     }
-    
+
     @DELETE
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String remover(
-            @FormParam("id") int id
-    ) {
-        System.out.println("LOL"+id);
-        DAO.removerItem(id);
+    //@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String remover( //@FormParam("id") int id
+            ) {
+        System.out.println("WOWOWOW");
+        //DAO.removerItem(id);
         return "ok";
     }
 }
