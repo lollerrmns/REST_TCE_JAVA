@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.com.modelos;
 
 import java.io.Serializable;
@@ -13,8 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
+
 import javax.persistence.TemporalType;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
@@ -44,15 +39,16 @@ public class Acervo implements Serializable {
     @Column(name = "autor", unique = false, nullable = false, length = 100)
     private String autor;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "data_incluso", unique = false, nullable = false, length = 10, columnDefinition = "DATETIME(10) DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "data_incluso", unique = false, nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     @Generated(GenerationTime.INSERT)
     private Date data_incluso;
 
-    @Column(name = "data_alterado", unique = false, nullable = true, length = 10,columnDefinition = "DATETIME(10) DEFAULT NULL")
+    @Column(name = "data_alterado", unique = false, nullable = true, columnDefinition = "DATETIME DEFAULT NULL")
+    @Generated(GenerationTime.INSERT)
     private Date data_alterado;
 
-    @Column(name = "data_excluido", unique = false, nullable = true, length = 10,columnDefinition = "DATETIME(10) DEFAULT NULL")
+    @Column(name = "data_excluido", unique = false, nullable = true, columnDefinition = "DATETIME DEFAULT NULL")
+    @Generated(GenerationTime.INSERT)
     private Date data_excluido;
 
     @Column(name = "tipo", unique = false, nullable = false, length = 30)
@@ -124,5 +120,5 @@ public class Acervo implements Serializable {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
-    }
+
+}
