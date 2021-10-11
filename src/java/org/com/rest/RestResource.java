@@ -1,8 +1,15 @@
 package org.com.rest;
 
 import com.google.gson.Gson;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.chart.PieChart;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -16,6 +23,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.com.controle.DAO;
 import org.com.modelos.Acervo;
 import org.hibernate.Session;
@@ -73,25 +81,31 @@ public class RestResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void gravar(
+    public Response gravar(
             @FormParam("descricao_Inc") String descricao,
             @FormParam("autor_Inc") String autor,
-            @FormParam("ano_pub_Inc") String ano_pub,
+            @FormParam("ano_pub_Inc") int ano_pub,
             @FormParam("tipo_inc") String tipo
     ) {
-        System.out.println("" + tipo);
-        /*
-        Acervo a = new Acervo();
-        a.setId(id);
-        a.setDescricao(descricao);
-        a.setAutor(autor);
-        a.setAno_pub(ano_pub);
-        a.setData_alterado(data_alterado);
-        a.setData_incluso(data_incluso);
+        try {
+            Acervo a = new Acervo();
+            a.setDescricao(descricao);
+            a.setAutor(autor);
+            a.setAno_pub(ano_pub);
+            a.setData_incluso(new Date());
 
-        DAO.gravarItem(a);
-         */
-//        return "OK";
+            DAO.gravarItem(a);
+        } catch (Exception ex) {
+            return Response
+                    .status(400)
+                    .build();
+
+        }
+
+        return Response
+                .ok()
+                .build();
+
     }
 
     /**
@@ -101,24 +115,36 @@ public class RestResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String alterar(
+    public Response alterar(
             @FormParam("id") int id,
             @FormParam("descricao") String descricao,
             @FormParam("autor") String autor,
-            @FormParam("ano_pub") String ano_pub,
+            @FormParam("ano_pub") int ano_pub,
             @FormParam("data_alterado") String data_alterado,
             @FormParam("data_incluso") String data_incluso
     ) {
-        Acervo a = new Acervo();
-        a.setId(id);
-        a.setDescricao(descricao);
-        a.setAutor(autor);
-        a.setAno_pub(ano_pub);
-        a.setData_alterado(data_alterado);
-        a.setData_incluso(data_incluso);
 
-        DAO.atualizarItem(a);
-        return "ok";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+
+        try {
+            Acervo a = new Acervo();
+            a.setId(id);
+            a.setDescricao(descricao);
+            a.setAutor(autor);
+            a.setAno_pub(ano_pub);
+            a.setData_alterado(sdf.parse(data_alterado));
+            a.setData_incluso(sdf.parse(data_incluso));
+            DAO.atualizarItem(a);
+        } catch (Exception ex) {
+            return Response
+                    .status(400)
+                    .build();
+
+        }
+
+        return Response
+                .ok()
+                .build();
     }
 
     @DELETE

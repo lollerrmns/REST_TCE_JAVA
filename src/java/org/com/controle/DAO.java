@@ -74,7 +74,7 @@ public class DAO {
 
     public static void removerItem(int id) {
         Acervo a = encontarItem(id);
-        a.setData_excluido("LOL");
+        a.setData_excluido(null);
         atualizarItem(a);
     }
 }

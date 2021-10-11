@@ -6,11 +6,17 @@
 package org.com.modelos;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 /**
  *
@@ -29,26 +35,28 @@ public class Acervo implements Serializable {
     @Column(name = "ID", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "descricao", unique = false, nullable = false, length = 100)
+    @Column(name = "descricao", unique = false, nullable = false, length = 250)
     private String descricao;
 
     @Column(name = "ano_pub", unique = false, nullable = false, length = 10)
-    private String ano_pub;
+    private int ano_pub;
 
     @Column(name = "autor", unique = false, nullable = false, length = 100)
     private String autor;
 
-    @Column(name = "data_incluso", unique = false, nullable = false, length = 10)
-    private String data_incluso;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "data_incluso", unique = false, nullable = false, length = 10, columnDefinition = "DATETIME(10) DEFAULT CURRENT_TIMESTAMP")
+    @Generated(GenerationTime.INSERT)
+    private Date data_incluso;
 
-    @Column(name = "data_alterado", unique = false, nullable = true, length = 10)
-    private String data_alterado;
+    @Column(name = "data_alterado", unique = false, nullable = true, length = 10,columnDefinition = "DATETIME(10) DEFAULT NULL")
+    private Date data_alterado;
 
-    @Column(name = "data_excluido", unique = false, nullable = true, length = 10)
-    private String data_excluido;
-    
+    @Column(name = "data_excluido", unique = false, nullable = true, length = 10,columnDefinition = "DATETIME(10) DEFAULT NULL")
+    private Date data_excluido;
+
     @Column(name = "tipo", unique = false, nullable = false, length = 30)
-    private String tipo = "Livro";
+    private String tipo;
 
     public Acervo() {
     }
@@ -69,6 +77,14 @@ public class Acervo implements Serializable {
         this.descricao = descricao;
     }
 
+    public int getAno_pub() {
+        return ano_pub;
+    }
+
+    public void setAno_pub(int ano_pub) {
+        this.ano_pub = ano_pub;
+    }
+
     public String getAutor() {
         return autor;
     }
@@ -77,36 +93,36 @@ public class Acervo implements Serializable {
         this.autor = autor;
     }
 
-    public String getAno_pub() {
-        return ano_pub;
-    }
-
-    public void setAno_pub(String ano_pub) {
-        this.ano_pub = ano_pub;
-    }
-
-    public String getData_incluso() {
+    public Date getData_incluso() {
         return data_incluso;
     }
 
-    public void setData_incluso(String data_incluso) {
+    public void setData_incluso(Date data_incluso) {
         this.data_incluso = data_incluso;
     }
 
-    public String getData_alterado() {
+    public Date getData_alterado() {
         return data_alterado;
     }
 
-    public void setData_alterado(String data_alterado) {
+    public void setData_alterado(Date data_alterado) {
         this.data_alterado = data_alterado;
     }
 
-    public String getData_excluido() {
+    public Date getData_excluido() {
         return data_excluido;
     }
 
-    public void setData_excluido(String data_excluido) {
+    public void setData_excluido(Date data_excluido) {
         this.data_excluido = data_excluido;
     }
 
-}
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
+    }
