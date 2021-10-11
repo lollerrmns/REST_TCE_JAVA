@@ -52,15 +52,17 @@ public class RestResource {
      * @return an instance of java.lang.String
      */
     @GET
-    //@Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String ler() {
-//        List<Acervo> lst = DAO.listaAcervo("");
-//        String lol = "";
-//        for (Acervo acervo : lst) {
-//            lol += acervo.getDescricao();
-//        }
-        return "";
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ler/{id}")
+    public String ler(@PathParam("id") int id) {
+        Acervo a = new Acervo();
+        try {
+            a = DAO.encontarItem(id);
+
+        } catch (Exception ex) {
+            return "ERROR";
+        }
+        return new Gson().toJson(a);
     }
 
     @GET
@@ -93,9 +95,11 @@ public class RestResource {
             a.setAutor(autor);
             a.setAno_pub(ano_pub);
             a.setData_incluso(new Date());
+            a.setTipo(tipo);
 
             DAO.gravarItem(a);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response
                     .status(400)
                     .build();
@@ -114,34 +118,70 @@ public class RestResource {
      * @param content representation for the resource
      */
     @PUT
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response alterar(
-            @FormParam("id") int id,
-            @FormParam("descricao") String descricao,
-            @FormParam("autor") String autor,
-            @FormParam("ano_pub") int ano_pub,
-            @FormParam("data_alterado") String data_alterado,
-            @FormParam("data_incluso") String data_incluso
-    ) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response alterar(String json) {
+        SimpleDateFormat dateFormato = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
+        Acervo a = new Acervo();
+        //Acervo a = new Gson().fromJson(json, Acervo.class);
         try {
-            Acervo a = new Acervo();
-            a.setId(id);
-            a.setDescricao(descricao);
-            a.setAutor(autor);
-            a.setAno_pub(ano_pub);
-            a.setData_alterado(sdf.parse(data_alterado));
-            a.setData_incluso(sdf.parse(data_incluso));
+            String[] token = json.split("\",\"");
+            for (String tok : token) {
+                if (tok.startsWith("{\"")) {
+                    tok = tok.replace("{\"", "");
+                } else if (tok.endsWith("\"}")) {
+                    tok = tok.replace("\"}", "");
+                }
+
+                String[] tt = tok.split("\":\"");
+                System.out.println("01 : " + tt[0]);
+                System.out.println("02 : " + tt[1]);
+                if (tt[1].equals("undefined") || tt[1].equals("")) {
+                    tt[1] = "";
+                }
+                switch (tt[0]) {
+                    case "id":
+                        a.setId(Integer.parseInt(tt[1]));
+                        break;
+                    case "descricao":
+                        a.setDescricao(tt[1]);
+                        break;
+                    case "ano_pub":
+                        a.setAno_pub(Integer.parseInt(tt[1]));
+                        break;
+                    case "autor":
+                        a.setAutor(tt[1]);
+                        break;
+                    case "data_incluso":
+                        if (tt[1].equals("undefined") || tt[1].equals("")) {
+                            a.setData_incluso(new Date());
+                        } else {
+                            a.setData_incluso(dateFormato.parse(ajustarData(tt[1])));
+                        }
+                        break;
+                    case "data_alterado":
+                        a.setData_incluso(new Date());
+                        break;
+                    case "data_excluido":
+                        if (tt[1].equals("undefined") || tt[1].equals("")) {
+                            a.setData_incluso(new Date());
+                        } else {
+                            a.setData_incluso(dateFormato.parse(tt[1]));
+                        }
+                        break;
+                    case "tipo":
+                        a.setTipo(tt[1]);
+                        break;
+
+                }
+            }
             DAO.atualizarItem(a);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response
                     .status(400)
                     .build();
 
         }
-
         return Response
                 .ok()
                 .build();
@@ -155,5 +195,13 @@ public class RestResource {
         System.out.println("WOWOWOW");
         //DAO.removerItem(id);
         return "ok";
+    }
+
+    public String ajustarData(String data) {
+        if (data.contains("Oct")) {
+            data = data.replace("Oct", "out");
+        }
+
+        return data;
     }
 }

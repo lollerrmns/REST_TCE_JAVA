@@ -20,19 +20,19 @@ public class DAO {
         String sql = "select * from acervo";
         String tmp = txt;
         if (txt.endsWith("*")) {
-            tmp = txt.substring(0,txt.length()-1);
+            tmp = txt.substring(0, txt.length() - 1);
         }
-        
+
         if (txt.endsWith("*") && tmp.equals("")) {
             sql += "";
-        }else if (txt.endsWith("*") && !tmp.equals("")) {
+        } else if (txt.endsWith("*") && !tmp.equals("")) {
             sql += " WHERE (descricao LIKE '%" + tmp + "%' OR ano_pub LIKE '%" + tmp + "%' OR autor LIKE '%" + tmp + "%' OR tipo LIKE '%" + tmp + "%' OR data_incluso LIKE '%" + tmp + "%')";
-        }else if (!txt.endsWith("*") && tmp.equals("")) {
+        } else if (!txt.endsWith("*") && tmp.equals("")) {
             sql += " WHERE data_excluido IS NULL";
-        }else if (!txt.endsWith("*") && !tmp.equals("")) {
+        } else if (!txt.endsWith("*") && !tmp.equals("")) {
             sql += " WHERE (descricao LIKE '%" + tmp + "%' OR ano_pub LIKE '%" + tmp + "%' OR autor LIKE '%" + tmp + "%' OR tipo LIKE '%" + tmp + "%' OR data_incluso LIKE '%" + tmp + "%') AND data_excluido IS NULL";
         }
-        
+
         List<Acervo> lst = new ArrayList<>();
         s = HibernateUtil.getSessionFactory().openSession();
         t = s.getTransaction();
@@ -48,7 +48,7 @@ public class DAO {
         s = HibernateUtil.getSessionFactory().openSession();
         t = s.getTransaction();
         t.begin();
-        a = (Acervo) s.createSQLQuery("select * from acervo WHERE data_excluido IS NULL").addEntity(Acervo.class).list().get(0);
+        a = (Acervo) s.createSQLQuery("select * from acervo WHERE id = '" + id + "'").addEntity(Acervo.class).list().get(0);
         t.commit();
         s.close();
         return a;
