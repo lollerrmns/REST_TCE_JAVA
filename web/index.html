@@ -168,23 +168,24 @@
                         </div>
 
                     </div>
-
+                    <br>
                     <div class="field">
                         <div class="field half">
-                            <input type="radio" id="Rad_livro" name="tipo_ed" value="Livro" checked>
-                            <label for="Rad_livro">Livro</label>
+                            <input type="radio" id="Rad_livro_Ed" name="tipo_ed" value="Livro" checked>
+                            <label for="Rad_livro_Ed">Livro</label>
                         </div>
                         <div class="field half">
-                            <input type="radio" id="Rad_doc" name="tipo_ed" value="Documentos Raros">
-                            <label for="Rad_doc">Documentos Raros</label>
+                            <input type="radio" id="Rad_doc_Ed" name="tipo_ed" value="Documentos Raros">
+                            <label for="Rad_doc_Ed">Documentos Raros</label>
                         </div>
                         <div class="field half">
-                            <input type="radio" id="Rad_manuscritos" name="tipo_ed" value="Manuscrito">
-                            <label for="Rad_manuscritos">Manuscritos</label>
+                            <input type="radio" id="Rad_manuscritos_Ed" name="tipo_ed" value="Manuscrito">
+                            <label for="Rad_manuscritos_Ed">Manuscritos</label>
                         </div>
                     </div><br><br>
 
                     <input type="submit" value="Salvar!" class="primary" onclick="edita()" />
+                    <input type="submit" value="Excluir" class="button" style="float:right" id = "btEx"/>
                     <!--</form>-->
                     <script>
                         function preenche(id) {
@@ -212,7 +213,21 @@
                                     } else {
                                         document.getElementById("Rad_livro").checked = true;
                                     }
-
+                                    if (document.getElementById("dX_ed").value != "undefined") {
+                                        document.getElementById("btEx").style = "display:none;";
+                                    } else {
+                                        document.getElementById("btEx").addEventListener('click', function () {
+                                            var xhr = new XMLHttpRequest();
+                                            xhr.onreadystatechange = function () {
+                                                if (xhr.readyState == XMLHttpRequest.DONE) {
+                                                    document.getElementById('demo-name').dispatchEvent(new Event('input'));
+                                                    window.location.replace("#intro");
+                                                }
+                                            }
+                                            xhr.open('DELETE', 'http://localhost:8080/REST_TCE_JAVA/webresources/rest/' + id, true);
+                                            xhr.send(null);
+                                        });
+                                    }
                                 }
                             }
                             xhr.open('GET', 'http://localhost:8080/REST_TCE_JAVA/webresources/rest/ler/' + id, true);
@@ -220,6 +235,8 @@
 
                         }
                         function edita() {
+                            var tipo_editar = "";
+
                             var json_var = {
                                 id: "" + document.getElementById("id_Ed").value,
                                 descricao: "" + document.getElementById("descricao_Ed").value,
@@ -228,7 +245,7 @@
                                 data_incluso: "" + document.getElementById("dC_ed").value,
                                 data_alterado: "" + document.getElementById("dE_ed").value,
                                 data_excluido: "" + document.getElementById("dX_ed").value,
-                                tipo: "Livro"
+                                tipo: document.querySelector('input[name="tipo_ed"]:checked').value
                             };
                             console.log(json_var);
                             var xhr = new XMLHttpRequest();
@@ -236,7 +253,6 @@
                                 if (xhr.readyState == XMLHttpRequest.DONE) {
                                     document.getElementById('demo-name').dispatchEvent(new Event('input'));
                                     window.location.replace("#intro");
-
                                 }
                             }
                             xhr.open('PUT', 'http://localhost:8080/REST_TCE_JAVA/webresources/rest/', true);

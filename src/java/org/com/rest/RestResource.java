@@ -115,7 +115,8 @@ public class RestResource {
     /**
      * PUT method for updating or creating an instance of RestResource
      *
-     * @param content representation for the resource
+     * @param json representation for the resource
+     * @return
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -159,15 +160,9 @@ public class RestResource {
                         }
                         break;
                     case "data_alterado":
-                        a.setData_incluso(new Date());
+                        a.setData_alterado(new Date());
                         break;
-                    case "data_excluido":
-                        if (tt[1].equals("undefined") || tt[1].equals("")) {
-                            a.setData_incluso(new Date());
-                        } else {
-                            a.setData_incluso(dateFormato.parse(tt[1]));
-                        }
-                        break;
+
                     case "tipo":
                         a.setTipo(tt[1]);
                         break;
@@ -189,12 +184,22 @@ public class RestResource {
 
     @DELETE
     //@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String remover( //@FormParam("id") int id
-            ) {
-        System.out.println("WOWOWOW");
-        //DAO.removerItem(id);
-        return "ok";
+    @Path("/{id}")
+    public Response remover(@PathParam("id") int id) {
+        try {
+            System.out.println("WOWOWOW");
+            
+            DAO.removerItem(id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response
+                    .status(400)
+                    .build();
+
+        }
+        return Response
+                .ok()
+                .build();
     }
 
     public String ajustarData(String data) {

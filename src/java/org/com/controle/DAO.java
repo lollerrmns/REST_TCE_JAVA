@@ -1,6 +1,7 @@
 package org.com.controle;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.com.modelos.Acervo;
 import org.com.rest.HibernateUtil;
@@ -74,7 +75,7 @@ public class DAO {
 
     public static void removerItem(int id) {
         Acervo a = encontarItem(id);
-        a.setData_excluido(null);
+        a.setData_excluido(new Date());
         atualizarItem(a);
     }
 }
