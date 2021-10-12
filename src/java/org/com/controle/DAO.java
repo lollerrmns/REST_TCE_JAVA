@@ -9,6 +9,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 /**
+ * Classe de Direct Access Object. O modelo DAO foi empregado visando tentar
+ * gerenciar a declaração de Sessions de uma forma simplificada, os métodos são
+ * static para que não seja necessário Abrir Sessions constantes através do
+ * HibernateUtil
  *
  * @author Elias Melo
  */
@@ -17,6 +21,17 @@ public class DAO {
     static Session s;
     static Transaction t;
 
+    /**
+     * Método listaAcervo() - Este método busca uma lista de objetos de Acervo
+     * por qualquer um dos itens [Descrição, Ano de publicação, Autor, Tipo,
+     * Data de inclusão]
+     *
+     * @param txt - Recebe o token a ser pesquisado caso seja adicionada um (*)
+     * ao final do token será incluido também na pesquisa os itens com
+     * data_excluido definida, caso contrário estes itens serão ignorados
+     * @return List<Acervo> - retorna uma lista de objetos contendo os
+     * resultados da pesquisa
+     */
     public static List<Acervo> listaAcervo(String txt) {
         String sql = "select * from acervo";
         String tmp = txt;
@@ -27,7 +42,7 @@ public class DAO {
         if (txt.endsWith("*") && tmp.equals("")) {
             sql += "";
         } else if (txt.endsWith("*") && !tmp.equals("")) {
-            sql += " WHERE (descricao LIKE '%" + tmp + "%' OR ano_pub LIKE '%" + tmp + "%' OR autor LIKE '%" + tmp + "%' OR tipo LIKE '%" + tmp + "%' OR data_incluso LIKE '%" + tmp + "%')";
+            sql += " WHERE (descricao LIKE '%" + tmp + "%' OR ano_pub LIKE '%" + tmp + "%' OR autor LIKE '%" + tmp + "%' OR tipo LIKE '%" + tmp + "%' OR data_incluso = '" + tmp + "')";
         } else if (!txt.endsWith("*") && tmp.equals("")) {
             sql += " WHERE data_excluido IS NULL";
         } else if (!txt.endsWith("*") && !tmp.equals("")) {
@@ -44,6 +59,12 @@ public class DAO {
         return lst;
     }
 
+    /**
+     * Método encontarItem - Este método busca um objeto de acervo pelo ID
+     *
+     * @param id - Recebe o ID
+     * @return Acervo - retorna o primeiro objeto com este id
+     */
     public static Acervo encontarItem(int id) {
         Acervo a = new Acervo();
         s = HibernateUtil.getSessionFactory().openSession();
@@ -55,24 +76,43 @@ public class DAO {
         return a;
     }
 
-    public static void gravarItem(Acervo a) {
+    /**
+     * Método gravarItem - Este método grava um novo item no Banco de Dados
+     *
+     * @param item - Recebe o objeto de acervo já pré definido
+     */
+    public static void gravarItem(Acervo item) {
         s = HibernateUtil.getSessionFactory().openSession();
         t = s.getTransaction();
         t.begin();
-        s.save(a);
+        s.save(item);
         t.commit();
         s.close();
     }
 
-    public static void atualizarItem(Acervo a) {
+    /**
+     * Método atualizarItem - Este método grava dados atualizados em um item no
+     * Banco de Dados
+     *
+     * @param item - Recebe o objeto de acervo já pré definido
+     */
+    public static void atualizarItem(Acervo item) {
         s = HibernateUtil.getSessionFactory().openSession();
         t = s.getTransaction();
         t.begin();
-        s.update(a);
+        s.update(item);
         t.commit();
         s.close();
     }
 
+    /**
+     * Método removerItem - Este método define uma data_excluido para o item.
+     * desta forma o titem deixará de ser considerado no método listaAcervo()
+     *
+     * @param id - Recebe o id referente ao item de acervo a ser removido, neste
+     * caso optei por não utilizar a referencia completa do objeto, mas pega-lo
+     * diretamente do banco
+     */
     public static void removerItem(int id) {
         Acervo a = encontarItem(id);
         a.setData_excluido(new Date());

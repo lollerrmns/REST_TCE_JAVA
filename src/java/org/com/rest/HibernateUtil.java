@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.com.rest;
 
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -12,7 +7,9 @@ import org.hibernate.cfg.Configuration;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory
- * object.
+ * object. 
+ * 
+ * Classe Gerada de forma Automática
  *
  * @author NOTT
  */

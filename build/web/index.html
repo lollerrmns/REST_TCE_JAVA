@@ -10,7 +10,8 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="assets/css/main.css" />
-        <script src="assets/js/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!--<script src="assets/js/jquery.min.js"></script>-->
         <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
     </head>
     <body class="is-preload">
@@ -31,10 +32,7 @@
                 <nav>
                     <ul>
                         <li><a href="#intro">Pesquisa</a></li>
-                        <!--<li><a href="#work">Work</a></li>-->
                         <li><a href="#about">Inserir</a></li>
-                        <!--<li><a href="#contact">Contact</a></li>-->
-                        <!--<li><a href="#elements">Elements</a></li>-->
                     </ul>
                 </nav>
             </header>
@@ -48,6 +46,7 @@
                         <h2 class="major">Pesquisa de Acervo</h2>
                         <input type="text" name="demo-name" id="demo-name" value="" placeholder="Digite aqui . . ." />
                         <div class="table-wrapper">
+                            <br>
                             <table class="alt" id = "tabela">
                                 <thead>
                                     <tr>
@@ -59,12 +58,11 @@
                                         <th>Data Exclusão</th>
                                         <th>Tipo</th>
                                         <th>EDIT</th>
-                                        <!--<th>DEL</th>-->
                                     </tr>
                                 </thead>
                                 <tbody id = "tabela_body">
                                 <script>
-                                    var rootURL = "http://localhost:8080/REST_TCE_JAVA/webresources/rest";
+                                    var rootURL = "webresources/rest";
                                     var txt = document.getElementById('demo-name');
                                     txt.addEventListener('input',
                                             function (e) {
@@ -78,7 +76,7 @@
                                                     data: {
                                                     },
                                                     success: function (result) {
-                                                        console.log(result);
+//                                                        console.log(result);
                                                         var conteudo = document.createElement('tbody');
                                                         result.forEach(function (element, index, array) {
                                                             var tr = document.createElement('tr');
@@ -189,16 +187,11 @@
                     <!--</form>-->
                     <script>
                         function preenche(id) {
-                            //alert("LOL - " + id);
-                            //var idid = new URLSearchParams(window.location.search).get('id');
                             var xhr = new XMLHttpRequest();
                             xhr.onreadystatechange = function () {
                                 if (xhr.readyState == XMLHttpRequest.DONE) {
                                     window.location.replace("#contact");
-                                    console.log(xhr.responseText);
                                     var json_array = JSON.parse(xhr.responseText);
-//                                    alert(json_array.autor);
-                                    console.log(json_array.descricao);
                                     document.getElementById("id_Ed").value = json_array.id;
                                     document.getElementById("descricao_Ed").innerHTML = json_array.descricao;
                                     document.getElementById("autor_Ed").value = json_array.autor;
@@ -216,6 +209,7 @@
                                     if (document.getElementById("dX_ed").value != "undefined") {
                                         document.getElementById("btEx").style = "display:none;";
                                     } else {
+                                        document.getElementById("btEx").style = "float:right; display:block;";
                                         document.getElementById("btEx").addEventListener('click', function () {
                                             var xhr = new XMLHttpRequest();
                                             xhr.onreadystatechange = function () {
@@ -224,13 +218,13 @@
                                                     window.location.replace("#intro");
                                                 }
                                             }
-                                            xhr.open('DELETE', 'http://localhost:8080/REST_TCE_JAVA/webresources/rest/' + id, true);
+                                            xhr.open('DELETE', 'webresources/rest/' + id, true);
                                             xhr.send(null);
                                         });
                                     }
                                 }
                             }
-                            xhr.open('GET', 'http://localhost:8080/REST_TCE_JAVA/webresources/rest/ler/' + id, true);
+                            xhr.open('GET', 'webresources/rest/ler/' + id, true);
                             xhr.send(null);
 
                         }
@@ -255,7 +249,7 @@
                                     window.location.replace("#intro");
                                 }
                             }
-                            xhr.open('PUT', 'http://localhost:8080/REST_TCE_JAVA/webresources/rest/', true);
+                            xhr.open('PUT', 'webresources/rest/', true);
                             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                             xhr.send(JSON.stringify(json_var));
                         }

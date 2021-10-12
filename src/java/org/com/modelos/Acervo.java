@@ -14,15 +14,15 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
 /**
+ * Modelo de Classe tipificando o objeto principal. Esta classe baseia-se em
+ * Anotações JPA para Formar a tabela no Banco de Dados através do Hibernate.
+ * Além das declarações de vatiaveis e anotações de tipos há somente a
+ * declaração de construtor vazio (necessária para o hibernate), e os
+ * Geters&Seters (também necessários para o hibernate)
  *
- * @author NOTT
+ * @author Elias Melo
  */
-//import org.hibernate.annotations.OptimisticLockType;
 @Entity
-//@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
-/*@Table(name = "Employee", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "ID"),
-        @UniqueConstraint(columnNames = "EMAIL") })*/
 public class Acervo implements Serializable {
 
     @Id
